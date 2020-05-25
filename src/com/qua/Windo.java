@@ -23,6 +23,9 @@ public class Windo extends JFrame {
     JTable table;
     JScrollPane jsc;
 
+    int delno=0;
+    int numbe=0;
+    String numb;
 
     JLabel nolab = new JLabel("編號:");
     JLabel simplab = new JLabel("取樣日期:");
@@ -48,6 +51,10 @@ public class Windo extends JFrame {
     JTextField delete_text = new JTextField(10);
 
 
+    JTextField test=new JTextField(10);
+    JTextField test1=new JTextField(10);
+
+
 
     Calendar calen = Calendar.getInstance();
     JDateChooser jdc = new JDateChooser(calen.getTime());
@@ -57,6 +64,9 @@ public class Windo extends JFrame {
     JButton insert = new JButton("新增");
     JButton delete = new JButton("刪除");
     JButton view =new JButton("當天");
+    JButton test_btu =new JButton("測試");
+
+
 
     DefaultTableModel dtm = new DefaultTableModel();
 
@@ -108,6 +118,10 @@ public class Windo extends JFrame {
         jp.add(delete_text);
         jp.add(delete);
 
+        jp.add(test_btu);
+        jp.add(test);
+
+
         jsc = new JScrollPane(table);
         table.setModel(dtm);
         f1.add(jp, BorderLayout.CENTER);
@@ -149,6 +163,19 @@ public class Windo extends JFrame {
 
                        dtm.addRow(new Object[]{no_text.getText(), simd_text.getText(), tested_text.getText(), loca_text.getText(), labname_text.getText(), count_text.getText(), month_text.getText(), culb_text.getText()});
                         messlab.setText("已新增資料");
+                        no_text.setText("");
+                        simd_text.setText("");
+                        tested_text.setText("");
+                        loca_text.setText("");
+                        labname_text.setText("");
+                        count_text.setText("");
+                        month_text.setText("");
+                        culb_text.setText("");
+                        Number numbr=new Number();
+                        numbr.GeNU(no_text);
+                       numb=no_text.getText();
+//                        numb=String.valueOf(numbe);
+                        no_text.setText(numb);
             }
         });
 
@@ -173,6 +200,17 @@ public class Windo extends JFrame {
                 SelectDate seld=new SelectDate();
                 seld.Getda(table,dtm,messlab);
 
+            }
+        });
+        test_btu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    int sel=table.getSelectedRow();
+                    int c=table.getSelectedColumn();
+                   // test.setText(String.valueOf(c));
+                System.out.println("Row:"+sel+","+"Column:"+c);
+                String te= String.valueOf(table.getValueAt(sel,c));
+                System.out.println(te);
             }
         });
 
