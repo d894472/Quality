@@ -2,6 +2,7 @@
   <library name="mysql-connector-java-5.1.48">
     <CLASSES>
       <root url="jar://D:/saftware/mysql-connector-java-5.1.48.jar!/" />
+      <root url="jar://D:/saftware/0511/itext-2.1.7.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

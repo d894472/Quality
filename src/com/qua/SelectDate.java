@@ -34,13 +34,14 @@ public class SelectDate {
                 String month=rs.getString("Month".toString());
                 double culb=rs.getDouble("Cubic");
 
+                // dfm.getRowCount();
 
                 dfm.addRow(new Object[]{qno,simd,testingd,location,lab,quantity,month,culb});
 
             }
-            if(rs.next()==false){
-            msglab.setText("查無此資料!!");
-            }
+//            if(rs.next()==false){
+//            msglab.setText("查無此資料!!");
+//            }
 
         } catch (SQLException e) {
             e.printStackTrace();

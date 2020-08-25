@@ -1,13 +1,22 @@
 package com.qua;
 
 
+import com.lowagie.text.*;
+import com.lowagie.text.Font;
+import com.lowagie.text.pdf.BaseFont;
+import com.lowagie.text.pdf.PdfCell;
+import com.lowagie.text.pdf.PdfPTable;
+import com.lowagie.text.pdf.PdfWriter;
 import com.toedter.calendar.JDateChooser;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.namespace.QName;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -65,7 +74,8 @@ public class Windo extends JFrame {
     JButton delete = new JButton("刪除");
     JButton view =new JButton("當天");
     JButton test_btu =new JButton("測試");
-
+    JButton update_btu =new JButton("更新");
+    JButton report_btu=new JButton("報表");
 
 
     DefaultTableModel dtm = new DefaultTableModel();
@@ -103,9 +113,9 @@ public class Windo extends JFrame {
 
         jp.add(culb);
         jp.add(culb_text);
-
+        jp.add(report_btu);
         jp.add(view);
-        jp.add(messlab);
+
 
         no_text.setEditable(false);
         month_text.setEditable(false);
@@ -120,6 +130,8 @@ public class Windo extends JFrame {
 
         jp.add(test_btu);
         jp.add(test);
+        jp.add(update_btu);
+        jp.add(test1);
 
 
         jsc = new JScrollPane(table);
@@ -197,6 +209,16 @@ public class Windo extends JFrame {
         view.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                int conut=dtm.getRowCount();
+                System.out.println("total:" + conut);
+
+                for (int i = conut-1; i>=0 ; i--) {
+                    dtm.removeRow(i);
+
+                }
+
+
+
                 SelectDate seld=new SelectDate();
                 seld.Getda(table,dtm,messlab);
 
@@ -205,17 +227,107 @@ public class Windo extends JFrame {
         test_btu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    int sel=table.getSelectedRow();
-                    int c=table.getSelectedColumn();
-                   // test.setText(String.valueOf(c));
-                System.out.println("Row:"+sel+","+"Column:"+c);
-                String te= String.valueOf(table.getValueAt(sel,c));
-                System.out.println(te);
+//                    int sel=table.getSelectedRow();
+//                    int c=table.getSelectedColumn();
+//                   // test.setText(String.valueOf(c));
+//                System.out.println("Row:"+sel+","+"Column:"+c);
+//                String te= String.valueOf(table.getValueAt(sel,c));
+//                System.out.println(te);
+
+               // String change=table.get
+
+
+            }
+        });
+
+        update_btu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int row=table.getSelectedRow();
+                int coul=table.getSelectedColumn();
+                String  coulna,rowname,nok,updatetxt;
+
+               if(table.editCellAt(row,coul)){
+
+                   //System.out.println("change");
+                   //System.out.println("Row:"+row+","+"Column:"+coul);
+                   coulna=table.getColumnName(coul);
+                   rowname=table.getColumnName(0);
+                  // System.out.println("RowName:" + rowname);
+                 //  System.out.println("ColumnName:"+coulna);
+                   nok= String.valueOf(table.getValueAt(row,0));
+
+
+                   String engname="";
+                   // table.getColumnName(0);
+                   switch (coulna){
+                       case "編號":
+                           engname="QualityNo";
+
+                       case "取樣日期":
+                           engname="SimpleDate";
+                           break;
+                       case "送驗日期":
+                           engname="TestingDate";
+                           break;
+
+                       case "部位":
+                           engname="Location";
+                           break;
+
+                       case "試驗室":
+                           engname="LabName";
+                           break;
+
+                       case "組數":
+                           engname="Quantity";
+                           break;
+
+                       case "28天":
+                           engname="Month";
+                           break;
+                       case "M3":
+                           engname="Cubic";
+                           break;
+
+       }
+                   updatetxt=test1.getText();
+                   Update upa=new Update();
+                   upa.Upda(coulna,updatetxt,nok);
+
+                   if(coulna=="取樣日期"||coulna=="送驗日期"){
+
+
+
+
+                   }
+
+
+                   //System.out.println("更新欄位:" + engname);
+                   //System.out.println("更新內容:" + updatetxt);
+                   //System.out.println("更新編號:"+ nok);
+
+
+               }
+            }
+        });
+
+        report_btu.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            DBcon dbcon=new DBcon();
+                try {
+                    dbcon.WriterPdf();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+
             }
         });
 
     }
 
 }
+
 
 
